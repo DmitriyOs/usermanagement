@@ -161,10 +161,6 @@ public class DBConnection {
             if (values.endsWith(",")) values = values.substring(0, values.length() - 1);
             query = query + values + ")";
             int resultCount = statement.executeUpdate(query);
-            //TODO:metDebugDB123 This is debug
-            if (resultCount <= 0) {
-                System.err.println("Something is wrong. metDebugDB123");
-            }
         } catch (SQLException e) {
             if (e.getErrorCode() == 1062 && e.getSQLState().equals("23000"))
                 throw new UserAlreadyExistsException();
@@ -218,10 +214,6 @@ public class DBConnection {
             query += " WHERE login='" + oldLogin + "'";
 
             int resultCount = statement.executeUpdate(query);
-            //TODO:metDebugDB124 This is debug
-            if (resultCount <= 0) {
-                System.err.println("Something is wrong. metDebugDB124");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DBException(e);
@@ -269,7 +261,6 @@ public class DBConnection {
         if (user.getEmail().length() == 0) user.setEmail(null);
         if (user.getMobilePhone().length() == 0) user.setMobilePhone(null);
         if (reason.length() > 0) {
-            //TODO:Remove ? It is for user only. used in add servlet
             throw new IncorrectUserException(reason);
         }
     }

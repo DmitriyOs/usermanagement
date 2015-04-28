@@ -22,7 +22,6 @@ public class StartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         checkAuthorization(request, response);
-
     }
 
     @Override
@@ -36,7 +35,6 @@ public class StartServlet extends HttpServlet {
             //If session exists (if all ok)
             request.setAttribute("login", session.getAttribute("login"));
             request.setAttribute("role", session.getAttribute("role"));
-
             String th = "";
             String table = "";
             String button = "";
@@ -46,19 +44,16 @@ public class StartServlet extends HttpServlet {
                     th = "<th></th>";
                     button = "<button type=\"button\" onclick=\"editUser()\">Add new user</button>";
                 }
-
             } catch (DBException e) {
-                //TODO:throw FATAL DB and redirect to fatal page
+                response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
+                return;
             } catch (NullPointerException e) {
                 //Table is empty, It is really do not needed doing anything
             }
-
             request.setAttribute("path", AppParam.getContextPath());
             request.setAttribute("th", th);
             request.setAttribute("table", table);
             request.setAttribute("button", button);
-
-
             request.getRequestDispatcher("/table.jsp").forward(request, response);
         } else {
             request.setAttribute("path", AppParam.getContextPath());
@@ -67,7 +62,6 @@ public class StartServlet extends HttpServlet {
     }
 
     private static String createTable(String inputRole) throws DBException, NullPointerException {
-
         String table = "";
         for (User user : DBConnection.getListUsers()) {
             table += "<tr>"
@@ -87,5 +81,4 @@ public class StartServlet extends HttpServlet {
         }
         return table;
     }
-
 }

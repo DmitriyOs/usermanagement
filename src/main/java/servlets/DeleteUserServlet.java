@@ -13,12 +13,6 @@ import java.io.IOException;
 
 public class DeleteUserServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//TODO:Who call post? 2
-        System.err.println("Who call post? 2");
-    }
-
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         HttpSession session = request.getSession();
@@ -27,12 +21,14 @@ public class DeleteUserServlet extends HttpServlet {
                 DBConnection.deleteUser(login);
                 //TODO: IMPORTANT kill session of this user
             } catch (DBException e) {
-                //TODO:throw fatal with database
+                response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
+                return;
             } catch (UserNotFoundException e) {
             }
             response.sendRedirect(AppParam.getContextPath() + "/start");
         } else {
-            //TODO:Throw fatal access denied
+            response.sendError(response.SC_FORBIDDEN);
+            return;
         }
 
     }

@@ -14,12 +14,6 @@ import java.io.IOException;
 
 public class EditUserFormServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO:Who call post? 1
-        System.err.println("Who call post? 1");
-    }
-
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.getAttribute("role") != null
@@ -44,33 +38,29 @@ public class EditUserFormServlet extends HttpServlet {
                         }
                     }
                     request.setAttribute("options", options);
-
-
-                    //TODO:задать атрибуты в jsp
                 } catch (DBException e) {
-                    //TODO:throw fatal with database
+                    response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
+                    return;
                 } catch (UserNotFoundException e) {
                     response.sendRedirect(AppParam.getContextPath() + "/start");
                     return;
                 }
-
             } else {
-                //request.setAttribute("oldlogin", "null");
                 try {
                     for (String x : DBConnection.getListRoles()) {
                         options += "<option>" + x + "</option>\n";
                     }
                 } catch (DBException e) {
-                    //TODO:throw fatal with database
+                    response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
+                    return;
                 }
             }
-
             request.setAttribute("path", AppParam.getContextPath());
             request.setAttribute("options", options);
             request.getRequestDispatcher("/edit.jsp").forward(request, response);
-
         } else {
-            //TODO:Throw fatal access denied
+            response.sendError(response.SC_FORBIDDEN);
+            return;
         }
 
     }

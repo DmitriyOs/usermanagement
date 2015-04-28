@@ -30,24 +30,13 @@ public class AuthorizationServlet extends HttpServlet {
                     } else throw new UserNotFoundException();
                 } catch (UserNotFoundException e) {
                     request.setAttribute("path", AppParam.getContextPath());
-                    //TODO:remove
-                    request.setAttribute("errortext", "Authorization Error");
                     request.setAttribute("haserror", "has-error");
                     request.getRequestDispatcher("/auth.jsp").forward(request, response);
                 }
             }
         } catch (DBException e) {
-            request.setAttribute("path", AppParam.getContextPath());
-            //TODO:change DBConnection error to FATAL with error code
-            request.setAttribute("errortext", "DBConnection Error");
-            request.getRequestDispatcher("/auth.jsp").forward(request, response);
+            response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
+            return;
         }
     }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO:Who call get? 111
-        System.err.println("Who call get? 111");
-    }
-
-
 }

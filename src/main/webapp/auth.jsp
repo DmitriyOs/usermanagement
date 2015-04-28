@@ -12,7 +12,6 @@
     <![endif]-->
 </head>
 <body>
-${errortext}
 <form method="post" action="${path}/authorization" role="form"
       style="width:300px; height:200px; margin: 120px auto; background: #8ec4d0;">
     <div class="form-group ${haserror}" style="width:200px; margin-left: auto; margin-right: auto;">
