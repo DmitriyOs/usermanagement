@@ -22,12 +22,30 @@ public class EditUserFormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("role").equals("admin")) {
+        if (session.getAttribute("role") != null
+                && session.getAttribute("role").equals("admin")) {
+            String options = "";
             if (!request.getParameter("login").equals("undefined")) {
                 String login = request.getParameter("login");
-                request.setAttribute("oldlogin", login);
                 try {
                     User user = DBConnection.getUser(login);
+                    request.setAttribute("oldlogin", user.getLogin());
+                    request.setAttribute("newlogin", user.getLogin());
+                    request.setAttribute("newpassword", user.getPassword());
+                    request.setAttribute("newfullname", user.getFullName());
+                    request.setAttribute("newemail", user.getEmail());
+                    request.setAttribute("newmobilephone", user.getMobilePhone());
+
+                    options += "<option>" + user.getRole() + "</option>\n";
+
+                    for (String x : DBConnection.getListRoles()) {
+                        if (!x.equals(user.getRole())) {
+                            options += "<option>" + x + "</option>\n";
+                        }
+                    }
+                    request.setAttribute("options", options);
+
+
                     //TODO:задать атрибуты в jsp
                 } catch (DBException e) {
                     //TODO:throw fatal with database
@@ -36,9 +54,19 @@ public class EditUserFormServlet extends HttpServlet {
                     return;
                 }
 
+            } else {
+                //request.setAttribute("oldlogin", "null");
+                try {
+                    for (String x : DBConnection.getListRoles()) {
+                        options += "<option>" + x + "</option>\n";
+                    }
+                } catch (DBException e) {
+                    //TODO:throw fatal with database
+                }
             }
 
-
+            request.setAttribute("path", AppParam.getContextPath());
+            request.setAttribute("options", options);
             request.getRequestDispatcher("/edit.jsp").forward(request, response);
 
         } else {

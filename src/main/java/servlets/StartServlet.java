@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class StartServlet extends HttpServlet {
     @Override
@@ -45,7 +44,7 @@ public class StartServlet extends HttpServlet {
                 table = createTable(session.getAttribute("role").toString());
                 if (session.getAttribute("role").toString().equals("admin")) {
                     th = "<th></th>";
-                    button = "<button type=\"button\" onclick=\"editUser()\">Edit</button>";
+                    button = "<button type=\"button\" onclick=\"editUser()\">Add new user</button>";
                 }
 
             } catch (DBException e) {

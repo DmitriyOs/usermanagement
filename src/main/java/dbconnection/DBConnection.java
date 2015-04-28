@@ -38,9 +38,7 @@ public class DBConnection {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) AS count FROM user");
             resultSet.next();
-            if (resultSet.getInt("count") == 0)
-                return true;
-            else return false;
+            return resultSet.getInt("count") == 0;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DBException(e);
@@ -262,12 +260,16 @@ public class DBConnection {
 
     private static void verifyUser(User user) throws DBException, IncorrectUserException {
         String reason = "";
-        if (user.getLogin() == null) reason += "'null' for Login is not allowed. ";
-        if (user.getPassword() == null) reason += "'null' for Password is not allowed. ";
-        if (user.getFullName() == null) reason += "'null' for FullName is not allowed. ";
+        if (user.getLogin() == null || user.getLogin().length() == 0) reason += "'null' for Login is not allowed. ";
+        if (user.getPassword() == null || user.getPassword().length() == 0)
+            reason += "'null' for Password is not allowed. ";
+        if (user.getFullName() == null || user.getFullName().length() == 0)
+            reason += "'null' for FullName is not allowed. ";
         if (!isRoleInDatabase(user.getRole())) reason += "Role is incorrect. ";
+        if (user.getEmail().length() == 0) user.setEmail(null);
+        if (user.getMobilePhone().length() == 0) user.setMobilePhone(null);
         if (reason.length() > 0) {
-            //TODO:Remove ? It is for user only
+            //TODO:Remove ? It is for user only. used in add servlet
             throw new IncorrectUserException(reason);
         }
     }

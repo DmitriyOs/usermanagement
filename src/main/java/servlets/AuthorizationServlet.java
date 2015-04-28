@@ -30,6 +30,7 @@ public class AuthorizationServlet extends HttpServlet {
                     } else throw new UserNotFoundException();
                 } catch (UserNotFoundException e) {
                     request.setAttribute("path", AppParam.getContextPath());
+                    //TODO:remove
                     request.setAttribute("errortext", "Authorization Error");
                     request.setAttribute("haserror", "has-error");
                     request.getRequestDispatcher("/auth.jsp").forward(request, response);
