@@ -30,7 +30,6 @@ public class DBConnection {
     }
 
     /**
-     *
      * @return true, if database is Empty
      * @throws DBException if something happened with database connection
      */
@@ -51,7 +50,7 @@ public class DBConnection {
     /**
      * @param login
      * @return User
-     * @throws DBException if something happened with database connection
+     * @throws DBException           if something happened with database connection
      * @throws UserNotFoundException if user was not found
      */
     public static User getUser(String login) throws DBException, UserNotFoundException {
@@ -76,7 +75,7 @@ public class DBConnection {
      * @param login
      * @return Role of the User
      * @throws UserNotFoundException if user was not found
-     * @throws DBException if something happened with database connection
+     * @throws DBException           if something happened with database connection
      */
     public static String getUserRole(String login) throws UserNotFoundException, DBException {
         try (Connection connection = dataSource.getConnection()) {
@@ -120,7 +119,7 @@ public class DBConnection {
      * @return List of user roles
      * @throws DBException if something happened with database connection
      */
-    public static List<String> getListRoles() throws DBException {
+    public static List<String> getListRoles() throws DBException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT role FROM role");
@@ -138,9 +137,9 @@ public class DBConnection {
 
     /**
      * @param user data for adding
-     * @throws DBException if something happened with database connection
+     * @throws DBException                if something happened with database connection
      * @throws UserAlreadyExistsException if user with the same user login already in database
-     * @throws IncorrectUserException if user data is incorrect
+     * @throws IncorrectUserException     if user data is incorrect
      */
     public static void addUser(User user) throws DBException, UserAlreadyExistsException, IncorrectUserException {
         verifyUser(user);
@@ -180,11 +179,12 @@ public class DBConnection {
 
     /**
      * Update user data by login
+     *
      * @param oldLogin
      * @param newUserData for updating
-     * @throws DBException if something happened with database connection
-     * @throws UserNotFoundException if user was not found
-     * @throws IncorrectUserException if user data is incorrect
+     * @throws DBException                if something happened with database connection
+     * @throws UserNotFoundException      if user was not found
+     * @throws IncorrectUserException     if user data is incorrect
      * @throws UserAlreadyExistsException if user with the same login as oldLogin already in database
      */
     public static void updateUser(String oldLogin, User newUserData) throws
@@ -197,7 +197,7 @@ public class DBConnection {
                 //'newlogin' already exist in database!
                 throw new UserAlreadyExistsException();
             } catch (UserNotFoundException e) {
-                //It is REALLY nothing to do. All Ok!
+                //It is REALLY do not needed doing anything. All Ok!
             }
         }
         verifyUser(newUserData);
@@ -234,7 +234,7 @@ public class DBConnection {
 
     /**
      * @param login
-     * @throws DBException if something happened with database connection
+     * @throws DBException           if something happened with database connection
      * @throws UserNotFoundException if user was not found
      */
     public static void deleteUser(String login) throws DBException, UserNotFoundException {

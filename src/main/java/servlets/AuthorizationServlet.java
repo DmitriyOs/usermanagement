@@ -30,14 +30,15 @@ public class AuthorizationServlet extends HttpServlet {
                     } else throw new UserNotFoundException();
                 } catch (UserNotFoundException e) {
                     request.setAttribute("path", AppParam.getContextPath());
-                    request.setAttribute("error", "Authorization Error");
+                    request.setAttribute("errortext", "Authorization Error");
+                    request.setAttribute("haserror", "has-error");
                     request.getRequestDispatcher("/auth.jsp").forward(request, response);
                 }
             }
         } catch (DBException e) {
             request.setAttribute("path", AppParam.getContextPath());
             //TODO:change DBConnection error to FATAL with error code
-            request.setAttribute("error", "DBConnection Error");
+            request.setAttribute("errortext", "DBConnection Error");
             request.getRequestDispatcher("/auth.jsp").forward(request, response);
         }
     }
