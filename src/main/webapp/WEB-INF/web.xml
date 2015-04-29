@@ -8,7 +8,9 @@
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
-
+    <listener>
+        <listener-class>servlets.HttpSessionCollector</listener-class>
+    </listener>
     <servlet>
         <servlet-name>StartServlet</servlet-name>
         <servlet-class>servlets.StartServlet</servlet-class>
@@ -28,6 +30,10 @@
     <servlet>
         <servlet-name>EditUserForm</servlet-name>
         <servlet-class>servlets.EditUserFormServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -49,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>EditUserForm</servlet-name>
         <url-pattern>/formedit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <description>MySQL Database</description>

@@ -19,7 +19,7 @@ public class DeleteUserServlet extends HttpServlet {
         if (session.getAttribute("role").equals("admin")) {
             try {
                 DBConnection.deleteUser(login);
-                //TODO: IMPORTANT kill session of this user
+                HttpSessionCollector.logout(login);
             } catch (DBException e) {
                 response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
                 return;

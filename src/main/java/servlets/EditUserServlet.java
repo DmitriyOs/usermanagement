@@ -34,7 +34,7 @@ public class EditUserServlet extends HttpServlet {
                     DBConnection.addUser(user);
                 } else {
                     DBConnection.updateUser(oldlogin, user);
-                    //TODO: IMPORTANT kill session of this user.secondadmin@mysmallcompany.comgetLogin()
+                    HttpSessionCollector.logout(user.getLogin());
                 }
             } catch (DBException e) {
                 response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");

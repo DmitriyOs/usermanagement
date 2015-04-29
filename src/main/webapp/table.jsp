@@ -15,14 +15,20 @@
     <![endif]-->
     <script>
         function deleteUser(s) {
-            window.location = "${path}/deleteuser?login="+s;
+            window.location = "${path}/deleteuser?login=" + s;
         }
     </script>
     <script>
         function editUser(s) {
-            window.location = "${path}/formedit?login="+s;
+            window.location = "${path}/formedit?login=" + s;
         }
     </script>
+    <script>
+        function logout() {
+            window.location = "${path}/logout?login=${login}";
+        }
+    </script>
+
 </head>
 
 <body>
@@ -44,7 +50,8 @@
     </tbody>
 </table>
 ${button}
-
+<br><br>
+<button type="button" onclick="logout()">Log out</button>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

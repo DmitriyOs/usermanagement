@@ -47,8 +47,6 @@ public class StartServlet extends HttpServlet {
             } catch (DBException e) {
                 response.sendError(response.SC_GATEWAY_TIMEOUT, "Database Connection Failed");
                 return;
-            } catch (NullPointerException e) {
-                //Table is empty, It is really do not needed doing anything
             }
             request.setAttribute("path", AppParam.getContextPath());
             request.setAttribute("th", th);
@@ -61,23 +59,27 @@ public class StartServlet extends HttpServlet {
         }
     }
 
-    private static String createTable(String inputRole) throws DBException, NullPointerException {
+    private static String createTable(String inputRole) throws DBException {
         String table = "";
-        for (User user : DBConnection.getListUsers()) {
-            table += "<tr>"
-                    + "<td>" + user.getLogin() + "</td>"
-                    + "<td>" + user.getRole() + "</td>"
-                    + "<td>" + user.getFullName() + "</td>"
-                    + "<td>";
-            table += user.getEmail() == null ? "" : user.getEmail();
-            table += "</td><td>";
-            table += user.getMobilePhone() == null ? "" : user.getMobilePhone();
-            table += "</td>";
-            if (inputRole.equals("admin")) {
-                table += "<td><button type=\"button\" onclick=\"editUser('" + user.getLogin() + "')\">Edit</button>"
-                        + "<button type=\"button\" onclick=\"deleteUser('" + user.getLogin() + "')\">Delete</button></td>";
+        try {
+            for (User user : DBConnection.getListUsers()) {
+                table += "<tr>"
+                        + "<td>" + user.getLogin() + "</td>"
+                        + "<td>" + user.getRole() + "</td>"
+                        + "<td>" + user.getFullName() + "</td>"
+                        + "<td>";
+                table += user.getEmail() == null ? "" : user.getEmail();
+                table += "</td><td>";
+                table += user.getMobilePhone() == null ? "" : user.getMobilePhone();
+                table += "</td>";
+                if (inputRole.equals("admin")) {
+                    table += "<td><button type=\"button\" onclick=\"editUser('" + user.getLogin() + "')\">Edit</button>"
+                            + "<button type=\"button\" onclick=\"deleteUser('" + user.getLogin() + "')\">Delete</button></td>";
+                }
+                table += "<tr>";
             }
-            table += "<tr>";
+        } catch (NullPointerException e) {
+            //Table is empty, It is really do not needed doing anything
         }
         return table;
     }
